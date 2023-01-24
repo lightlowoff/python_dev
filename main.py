@@ -34,27 +34,7 @@ async def info_for_guests(message: types.Message):
 @dp.message_handler(owner, commands=["check_id"])
 async def check_id(message: types.Message):
     authorized_users_str = '\n'.join(map(str, whitelist))
-    keyboard = InlineKeyboardMarkup(row_width=2)
-    add_button = InlineKeyboardButton("Add", callback_data="add_id")
-    del_button = InlineKeyboardButton("Delete", callback_data="del_id")
-    keyboard.add(add_button, del_button)
-    await bot.send_message(message.chat.id, "ID в whitelist: \n\n" + authorized_users_str, reply_markup=keyboard)
-
-
-@dp.callback_query_handler(lambda c: c.data == "add_id")
-async def add_id_callback(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id, "Введите ID который хотите добавить:")
-
-    @dp.message_handler(lambda message: message.from_user.id == callback_query.from_user.id)
-    async def process_message(message: types.Message):
-        user_id = message.text
-        if int(user_id) not in whitelist:
-            whitelist.append(int(user_id))
-            with open("users.txt", "a") as FILE:
-                FILE.write(user_id + "\n")
-            await bot.answer_callback_query(callback_query.id, f"ID {user_id} добавлен в whitelist.")
-        else:
-            await bot.answer_callback_query(callback_query.id, "Этот ID уже есть в whitelist.")
+    await bot.send_message(message.chat.id, "ID в whitelist: \n\n" + authorized_users_str)
 
 
 @dp.message_handler(owner, commands=["add_id"])
