@@ -1,5 +1,4 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from dotenv import load_dotenv, find_dotenv
 import os
 
